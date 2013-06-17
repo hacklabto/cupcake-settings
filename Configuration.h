@@ -132,7 +132,7 @@
 // 55 is 100k thermistor - ATC Semitec 104GT-2 (Used in ParCan) (1k pullup)
 
 // Not perfectly acturate, not sure where these are defined.
-#define TEMP_SENSOR_0 5
+#define TEMP_SENSOR_0 7
 #define TEMP_SENSOR_1 0
 #define TEMP_SENSOR_2 0
 #define TEMP_SENSOR_BED 0
@@ -177,7 +177,7 @@
   //#define PID_OPENLOOP 1 // Puts PID in open loop. M104/M140 sets the output power from 0 to PID_MAX
   
   // Cupcake mk4 crazy overshoot if this is not set very high.
-  #define PID_FUNCTIONAL_RANGE 100 // If the temperature difference between the target temperature and the actual temperature
+  #define PID_FUNCTIONAL_RANGE 40 // If the temperature difference between the target temperature and the actual temperature
                                   // is more then PID_FUNCTIONAL_RANGE then the PID will be shut off and the heater will be set to min/max.
   #define PID_INTEGRAL_DRIVE_MAX 255  //limit for the integral term
   #define K1 0.95 //smoothing factor within the PID
@@ -185,14 +185,20 @@
 
 // If you are using a preconfigured hotend then you can use one of the value sets by uncommenting it
 
-// Pulled off some random google group for mk4 PID factors.
-   #define DEFAULT_Kp 7.0
-   #define DEFAULT_Ki 0.34
-   #define DEFAULT_Kd 36.0
+// More Trial and error: (Barely any overshoot now, close enough!)
+   #define DEFAULT_Kp 0.75
+   #define DEFAULT_Ki 20
+   #define DEFAULT_Kd 600
 
+// Trial and error.
+/*
+   #define DEFAULT_Kp 0.25
+   #define DEFAULT_Ki 0.25
+   #define DEFAULT_Kd 450.0
+*/
 // Ultimaker
 //    #define  DEFAULT_Kp 22.2
-//    #define  DEFAULT_Ki 1.08
+//    #define  DEFAULT_Ki 1.08f
 //    #define  DEFAULT_Kd 114
 
 // Makergear
@@ -348,8 +354,7 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 #define HOMING_FEEDRATE {50*60, 50*60, 4*60, 0}  // set the homing speeds (mm/min)
 
 // default settings
-//#define DEFAULT_AXIS_STEPS_PER_UNIT   {78.7402,78.7402,200.0*8/3,760*1.1}  // default steps per unit for Ultimaker
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {78.7402/0.838,78.7402/0.838,200.0*8/3/0.4,760*1.1}  // Measured
+#define DEFAULT_AXIS_STEPS_PER_UNIT   {78.7402/0.838,    78.7402/0.838,    200.0*8/3/0.4/8,    760*1.1/16}  // Measured, corrected for microstepping.
 #define DEFAULT_MAX_FEEDRATE          {500, 500, 5, 25}    // (mm/sec)
 #define DEFAULT_MAX_ACCELERATION      {9000,9000,100,10000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
 
